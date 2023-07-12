@@ -38,17 +38,22 @@ export class ContactComponent {
     fd.append('email', this.emailField.nativeElement.value);
     fd.append('message', this.textField.nativeElement.value);
     //senden
-    await fetch(
+    const response = await fetch(
       'https://marcel-eteki.developerakademie.net/send_mail/send_mail.php',
       {
         method: 'POST',
         body: fd,
       }
     );
-    document.getElementById('successful')?.classList.remove('opacity-0');
-    setTimeout(() => {
-      this.enableForm();
-    }, 4000);
+
+    if (response.ok) {
+      document.getElementById('successful')?.classList.remove('opacity-0');
+      setTimeout(() => {
+        this.enableForm();
+      }, 4000);
+    } else {
+      document.getElementById('fail')?.classList.remove('opacity-0');
+    }
   }
 
   inputValueNull() {
